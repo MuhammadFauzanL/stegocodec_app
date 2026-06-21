@@ -3,6 +3,7 @@ import { generateExperimentId } from '../shared/experiment_id';
 import { calculateCapacity } from '../shared/capacity';
 import { createExperimentRecord } from '../shared/metrics_logger';
 import { determineIntegrityBadge } from '../shared/integrity';
+import { buildPayload } from '../shared/payload';
 
 // Image
 import { embedImage, extractImage } from './image/image_stego';
@@ -42,12 +43,16 @@ export async function runImageExperiment(
     const capacityBits = calculateCapacity('image', imageData.data.length, embeddingMethod);
     const startTime = performance.now();
     
-    let stegoImageData = embedImage(imageData, message, {
-        media_type: 'image',
+    const params = {
+        media_type: 'image' as const,
         embedding_method: embeddingMethod,
         ecc_method: eccMethod,
         version: '5.0'
-    }, 1);
+    };
+    const payloadBits = buildPayload(message, params);
+    const actualPayloadSize = payloadBits.length;
+
+    let stegoImageData = embedImage(imageData, message, params, 1);
 
     if (compressionMethod === 'dct') {
         stegoImageData = compressDCT(stegoImageData, 50);
@@ -88,7 +93,7 @@ export async function runImageExperiment(
          media_type: 'image',
          compression_method: compressionMethod,
          embedding_method: embeddingMethod,
-         payload_size_bits: parsed.header.payload_length_bits,
+         payload_size_bits: actualPayloadSize,
          payload_capacity_bits: capacityBits,
          ecc_mode: eccMethod === 'none' ? 'manual' : 'adaptive',
          preset_mode: 'manual'
@@ -123,12 +128,16 @@ export async function runAudioExperiment(
     
     const startTime = performance.now();
     
-    let stegoSamples = embedAudio(samples, message, {
-        media_type: 'audio',
+    const params = {
+        media_type: 'audio' as const,
         embedding_method: embeddingMethod,
         ecc_method: eccMethod,
         version: '5.0'
-    });
+    };
+    const payloadBits = buildPayload(message, params);
+    const actualPayloadSize = payloadBits.length;
+    
+    let stegoSamples = embedAudio(samples, message, params);
     
     if (compressionMethod === 'adpcm_4bit') {
         stegoSamples = compressADPCM(stegoSamples, 4);
@@ -160,7 +169,7 @@ export async function runAudioExperiment(
          media_type: 'audio',
          compression_method: compressionMethod,
          embedding_method: embeddingMethod,
-         payload_size_bits: parsed.header.payload_length_bits,
+         payload_size_bits: actualPayloadSize,
          payload_capacity_bits: capacityBits,
          ecc_mode: eccMethod === 'none' ? 'manual' : 'adaptive',
          preset_mode: 'manual'
@@ -190,12 +199,16 @@ export async function runVideoExperiment(
     
     const startTime = performance.now();
     
-    let stegoKeyframe = embedVideoKeyframe(keyframe, message, {
-        media_type: 'video',
+    const params = {
+        media_type: 'video' as const,
         embedding_method: embeddingMethod,
         ecc_method: eccMethod,
         version: '5.0'
-    });
+    };
+    const payloadBits = buildPayload(message, params);
+    const actualPayloadSize = payloadBits.length;
+
+    let stegoKeyframe = embedVideoKeyframe(keyframe, message, params);
     
     let compressedSize = 0;
     
@@ -237,7 +250,7 @@ export async function runVideoExperiment(
          media_type: 'video',
          compression_method: compressionMethod,
          embedding_method: embeddingMethod,
-         payload_size_bits: parsed.header.payload_length_bits,
+         payload_size_bits: actualPayloadSize,
          payload_capacity_bits: capacityBits,
          ecc_mode: eccMethod === 'none' ? 'manual' : 'adaptive',
          preset_mode: 'manual'

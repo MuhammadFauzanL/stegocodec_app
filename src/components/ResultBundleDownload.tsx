@@ -5,12 +5,13 @@ import { exportMetricsCSV } from '../shared/metrics_logger';
 import JSZip from 'jszip';
 import { Modal } from './Modal';
 
-export const ResultBundleDownload = ({ record, stegoBlob }: { record: ExperimentRecord, stegoBlob: Blob | null }) => {
+export const ResultBundleDownload = ({ record, stegoBlob, loading }: { record: ExperimentRecord | null, stegoBlob: Blob | null, loading?: boolean }) => {
   const [zipping, setZipping] = useState(false);
 
   const [modal, setModal] = useState<{title: string, message: string} | null>(null);
 
   const handleDownloadMetrics = () => {
+     if (!record) return;
      const blob = exportMetricsCSV([record]);
      const url = URL.createObjectURL(blob);
      const a = document.createElement('a');
@@ -22,7 +23,7 @@ export const ResultBundleDownload = ({ record, stegoBlob }: { record: Experiment
      URL.revokeObjectURL(url);
   };
 
-  const getExt = () => record.media_type === 'audio' ? 'wav' : 'png';
+  const getExt = () => record?.media_type === 'audio' ? 'wav' : 'png';
 
   const handleDownloadStego = () => {
      if (!stegoBlob) return;
@@ -35,7 +36,7 @@ export const ResultBundleDownload = ({ record, stegoBlob }: { record: Experiment
   };
 
   const handleDownloadZip = async () => {
-      if (!stegoBlob) return;
+      if (!stegoBlob || !record) return;
       setZipping(true);
       try {
           const zip = new JSZip();
@@ -100,13 +101,13 @@ Processing Time Total: ${record.processing_time_total_ms} ms
   return (
     <>
     <div className="flex space-x-3 mt-4 pt-4 border-t border-slate-100">
-       <button onClick={handleDownloadMetrics} className="text-xs font-medium border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 py-1.5 px-3 rounded-md">
+       <button onClick={handleDownloadMetrics} disabled={!record || loading} className="text-xs font-medium border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 py-1.5 px-3 rounded-md disabled:opacity-50">
           Unduh Metrik (CSV)
        </button>
-       <button onClick={handleDownloadStego} disabled={!stegoBlob} className="text-xs font-medium border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 py-1.5 px-3 rounded-md disabled:opacity-50">
+       <button onClick={handleDownloadStego} disabled={!stegoBlob || loading} className="text-xs font-medium border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 py-1.5 px-3 rounded-md disabled:opacity-50">
           Unduh Media Stego
        </button>
-       <button onClick={handleDownloadZip} disabled={!stegoBlob || zipping} className="text-xs font-medium border border-slate-900 bg-slate-900 hover:bg-slate-800 text-white py-1.5 px-3 rounded-md disabled:opacity-50">
+       <button onClick={handleDownloadZip} disabled={!stegoBlob || zipping || loading} className="text-xs font-medium border border-slate-900 bg-slate-900 hover:bg-slate-800 text-white py-1.5 px-3 rounded-md disabled:opacity-50">
           {zipping ? 'Membungkus ZIP...' : 'Unduh Paket Lengkap (ZIP)'}
        </button>
     </div>

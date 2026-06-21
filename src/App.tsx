@@ -25,6 +25,7 @@ function useLiveClock() {
 function App() {
   const [currentRecord, setCurrentRecord] = useState<ExperimentRecord | null>(null);
   const [stegoBlob, setStegoBlob] = useState<Blob | null>(null);
+  const [isProcessing, setIsProcessing] = useState(false);
   const [activeTab, setActiveTab] = useState<NavTab>('encode');
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [hasEntered, setHasEntered] = useState(false);
@@ -37,6 +38,19 @@ function App() {
   const handleComplete = (record: ExperimentRecord, blob: Blob) => {
       setCurrentRecord(record);
       setStegoBlob(blob);
+      setIsProcessing(false);
+  };
+
+  const handleStart = () => {
+      setCurrentRecord(null);
+      setStegoBlob(null);
+      setIsProcessing(true);
+  };
+
+  const handleClear = () => {
+      setCurrentRecord(null);
+      setStegoBlob(null);
+      setIsProcessing(false);
   };
 
   const timeStr = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false });
@@ -142,11 +156,11 @@ function App() {
                {activeTab === 'encode' && (
                    <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
                        <div className="lg:col-span-4">
-                           <UploadPanel onComplete={handleComplete} />
+                           <UploadPanel onComplete={handleComplete} onStart={handleStart} onClear={handleClear} />
                        </div>
                        <div className="lg:col-span-8">
-                           {currentRecord ? (
-                              <MetricsDashboard record={currentRecord} stegoBlob={stegoBlob} />
+                           {(currentRecord || isProcessing) ? (
+                              <MetricsDashboard record={currentRecord} stegoBlob={stegoBlob} loading={isProcessing} />
                            ) : (
                               <div className="border border-dashed border-slate-300 rounded-lg p-16 text-center text-slate-500 bg-white shadow-sm flex flex-col items-center justify-center min-h-[300px] h-full">
                                  <p className="text-base font-medium text-slate-700">Belum Ada Eksperimen Aktif</p>

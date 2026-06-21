@@ -4,7 +4,7 @@ import { saveExperimentToHistory } from '../shared/metrics_logger';
 import { runImageExperiment, runAudioExperiment, runVideoExperiment, extractImagePipeline, extractAudioPipeline, extractVideoPipeline, runCodecExperiment } from '../modules/pipeline';
 import { Modal } from './Modal';
 
-export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, stegoBlob: Blob) => void }) => {
+export const UploadPanel = ({ onComplete, onStart, onClear }: { onComplete: (r: ExperimentRecord, stegoBlob: Blob) => void, onStart?: () => void, onClear?: () => void }) => {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [message, setMessage] = useState('');
@@ -53,6 +53,10 @@ export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, 
 
   const handleRun = async () => {
     if (!file) return setModal({ title: 'Peringatan', message: 'Silakan pilih file media terlebih dahulu.' });
+    if (mode === 'embedding' && !message.trim()) {
+        return setModal({ title: 'Peringatan', message: 'Pesan rahasia tidak boleh kosong.' });
+    }
+    if (onStart) onStart();
     setLoading(true);
     setExtractedPayload(null);
     setCodecResult(null);
@@ -114,22 +118,22 @@ export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, 
   return (
     <>
     <div className="bg-white border border-slate-200 rounded-md shadow-sm p-5 relative">
-      <div className="flex bg-slate-100 p-1 rounded-lg mb-4">
-        <button
-          onClick={() => setMode('embedding')}
-          className={`flex-1 py-2 text-sm font-semibold rounded-md transition-colors ${mode === 'embedding' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+      <div className="flex space-x-6 border-b border-slate-200 mb-6 pb-2">
+        <button 
+          onClick={() => { setMode('embedding'); if (onClear) onClear(); }}
+          className={`pb-2 text-sm font-semibold transition-colors border-b-2 ${mode === 'embedding' ? 'border-slate-900 text-slate-900' : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'}`}
         >
           Embedding
         </button>
-        <button
-          onClick={() => setMode('extraction')}
-          className={`flex-1 py-2 text-sm font-semibold rounded-md transition-colors ${mode === 'extraction' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+        <button 
+          onClick={() => { setMode('extraction'); if (onClear) onClear(); }}
+          className={`pb-2 text-sm font-semibold transition-colors border-b-2 ${mode === 'extraction' ? 'border-slate-900 text-slate-900' : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'}`}
         >
           Extraction
         </button>
-        <button
-          onClick={() => setMode('codec')}
-          className={`flex-1 py-2 text-sm font-semibold rounded-md transition-colors ${mode === 'codec' ? 'bg-white text-slate-900 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+        <button 
+          onClick={() => { setMode('codec'); if (onClear) onClear(); }}
+          className={`pb-2 text-sm font-semibold transition-colors border-b-2 ${mode === 'codec' ? 'border-slate-900 text-slate-900' : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'}`}
         >
           Codec (RLE)
         </button>
