@@ -7,7 +7,7 @@ import { Modal } from './Modal';
 export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, stegoBlob: Blob) => void }) => {
   const [loading, setLoading] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [message, setMessage] = useState('Secret Message');
+  const [message, setMessage] = useState('');
   const [embedMethod, setEmbedMethod] = useState<string>('lsb');
   const [eccMethod, setEccMethod] = useState<ECCMethod>('none');
   const [compression, setCompression] = useState<string>('none');
@@ -137,23 +137,29 @@ export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, 
 
       <div className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wide">Sumber Media (Media Source)</label>
-          <input type="file" accept="image/png, image/jpeg, audio/wav, video/mp4" onChange={e => {
+          <label className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wide">Pilih Sumber Media</label>
+          <input type="file" id="media-upload" accept="image/png, image/jpeg, audio/wav, video/mp4" className="hidden" onChange={e => {
               setFile(e.target.files?.[0] || null);
               setCompression('none'); 
-              setEmbedMethod('lsb'); // Reset to default on file change
-          }} className="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-slate-100 file:text-slate-700 hover:file:bg-slate-200 cursor-pointer" />
+              setEmbedMethod('lsb');
+          }} />
+          <label htmlFor="media-upload" className="inline-block bg-slate-100 text-slate-700 hover:bg-slate-200 text-sm font-semibold py-2 px-4 rounded-md cursor-pointer mr-3">
+             Choose Media
+          </label>
+          <span className="text-sm text-slate-500">
+             {file ? file.name : "Tidak ada file yang dipilih"}
+          </span>
         </div>
 
         {mode === 'embedding' && (
           <>
             <div>
-               <label className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wide">Pesan Rahasia (Secret Message)</label>
-               <textarea value={message} onChange={e => setMessage(e.target.value)} className="w-full border border-slate-200 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent" rows={2}></textarea>
+               <label className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wide">Masukan Pesan Rahasia</label>
+               <textarea value={message} onChange={e => setMessage(e.target.value)} placeholder="Masukkan pesan rahasia..." className="w-full border border-slate-200 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent" rows={2}></textarea>
             </div>
             <div className="space-y-3">
                 <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Metode Penyisipan (Embedding Method)</label>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Metode Penyisipan</label>
                     <select value={embedMethod} onChange={e => setEmbedMethod(e.target.value)} className="w-full border border-slate-200 rounded text-xs p-2 focus:outline-none">
                         <option value="lsb">Standar LSB (Standard LSB)</option>
                         <option value="lsb_opap">LSB + Penyesuaian Piksel (LSB + OPAP)</option>
@@ -179,7 +185,7 @@ export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, 
                 </div>
             </div>
             <button onClick={handleRun} disabled={loading || !file} className="w-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold py-3 rounded-md transition-colors mt-2 shadow-sm disabled:opacity-50">
-              {loading ? 'Sedang Memproses (Processing)...' : 'Jalankan Eksperimen (Run Experiment)'}
+              {loading ? 'Sedang Memproses...' : 'Jalankan Eksperimen'}
             </button>
           </>
         )}
@@ -187,11 +193,11 @@ export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, 
         {mode === 'extraction' && (
           <>
             <button onClick={handleRun} disabled={loading || !file} className="w-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold py-3 rounded-md transition-colors mt-2 shadow-sm disabled:opacity-50">
-              {loading ? 'Mengekstrak (Extracting)...' : 'Ekstrak Pesan (Extract Payload)'}
+              {loading ? 'Mengekstrak...' : 'Ekstrak Pesan'}
             </button>
             {extractedPayload && (
               <div className="mt-4 p-4 border border-slate-200 bg-white rounded-lg shadow-sm">
-                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Pesan Berhasil Diekstrak (Successfully Extracted)</h3>
+                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Pesan Berhasil Diekstrak</h3>
                 <div className="text-sm font-semibold text-slate-900 break-words">
                   {extractedPayload}
                 </div>
@@ -203,22 +209,22 @@ export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, 
         {mode === 'codec' && (
           <>
             <button onClick={handleRun} disabled={loading || !file} className="w-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold py-3 rounded-md transition-colors mt-2 shadow-sm disabled:opacity-50">
-              {loading ? 'Sedang Memproses (Processing)...' : 'Kompres & Dekompres (Compress & Decompress RLE)'}
+              {loading ? 'Sedang Memproses...' : 'Kompres & Dekompres (RLE)'}
             </button>
             {codecResult && (
               <div className="mt-4 p-4 border border-slate-200 bg-white rounded-lg shadow-sm">
-                 <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Hasil Codec RLE (Codec Results)</h3>
-                 <div className="text-sm font-semibold text-slate-900 mb-2">Rasio Kompresi (Compression Ratio): {codecResult.ratio.toFixed(4)}x</div>
+                 <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Hasil Codec RLE</h3>
+                 <div className="text-sm font-semibold text-slate-900 mb-2">Rasio Kompresi: {codecResult.ratio.toFixed(4)}x</div>
                  <div className="text-xs text-slate-500 mb-4">
                     Original: {(codecResult.original/1024).toFixed(2)} KB &rarr; Compressed: {(codecResult.compressed/1024).toFixed(2)} KB <br/>
-                    (Waktu/Time: {codecResult.time.toFixed(2)} ms)
+                    (Waktu: {codecResult.time.toFixed(2)} ms)
                  </div>
                  <button onClick={() => {
                      const url = URL.createObjectURL(codecResult.blob);
                      const a = document.createElement('a'); a.href = url; a.download = 'decompressed_rle.png'; a.click();
                      URL.revokeObjectURL(url);
                  }} className="w-full text-xs font-bold border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2 px-3 rounded-md transition-colors">
-                    Unduh Hasil Dekompresi (Download Decompressed Result)
+                    Unduh Hasil Dekompresi
                  </button>
               </div>
             )}

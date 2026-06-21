@@ -43,12 +43,12 @@ export const RecentExperimentsPanel = () => {
       <>
       <div className="bg-white border border-slate-200 rounded-md shadow-sm">
          <div className="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
-            <h2 className="text-sm font-semibold">Recent History</h2>
-            <span className="text-xs text-slate-400">{history.length} records</span>
+            <h2 className="text-sm font-semibold">Riwayat Terbaru</h2>
+            <span className="text-xs text-slate-400">{history.length} data</span>
          </div>
          <div className="p-0">
             {history.length === 0 ? (
-               <div className="p-5 text-center text-xs text-slate-500">No recent experiments.</div>
+               <div className="p-5 text-center text-xs text-slate-500">Belum ada riwayat eksperimen.</div>
             ) : (
                <ul className="divide-y divide-slate-100 max-h-96 overflow-y-auto">
                   {history.map(rec => (
@@ -62,10 +62,10 @@ export const RecentExperimentsPanel = () => {
                            </div>
                            <div className="flex space-x-2">
                                <button onClick={handleReRun} className="text-[10px] font-bold text-white bg-emerald-600 px-3 py-1.5 rounded hover:bg-emerald-700 transition-colors shadow-sm">
-                                  Re-run
+                                  Jalankan Ulang
                                </button>
                                <button onClick={() => handleDeleteClick(rec.experiment_id)} className="text-[10px] font-bold text-white bg-red-600 px-3 py-1.5 rounded hover:bg-red-700 transition-colors shadow-sm">
-                                  Delete
+                                  Hapus
                                </button>
                            </div>
                         </div>

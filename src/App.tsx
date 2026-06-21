@@ -45,17 +45,17 @@ function App() {
     },
     {
       id: 'history',
-      label: 'Decode & History',
+      label: 'Decode & Riwayat',
       icon: <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
     },
     {
       id: 'compare',
-      label: 'Compare Metrik',
+      label: 'Bandingkan',
       icon: <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" /></svg>,
     },
     {
       id: 'about',
-      label: 'Tentang Aplikasi',
+      label: 'Tentang',
       icon: <svg className="w-5 h-5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
     },
   ];
@@ -122,8 +122,8 @@ function App() {
             </button>
             <h1 className="text-sm font-semibold text-slate-800 capitalize">
               {activeTab === 'encode' ? 'Encode & Extract' : 
-               activeTab === 'history' ? 'Decode & History' : 
-               activeTab === 'about' ? 'Tentang Aplikasi' : 'Compare Metrik'}
+               activeTab === 'history' ? 'Decode & Riwayat' : 
+               activeTab === 'about' ? 'Tentang' : 'Bandingkan'}
             </h1>
           </div>
           {/* Mobile clock mini */}
@@ -144,7 +144,7 @@ function App() {
                            ) : (
                               <div className="border border-dashed border-slate-300 rounded-lg p-16 text-center text-slate-500 bg-white shadow-sm flex flex-col items-center justify-center min-h-[300px] h-full">
                                  <p className="text-base font-medium text-slate-700">Belum Ada Eksperimen Aktif</p>
-                                 <p className="text-sm mt-2 text-slate-400 max-w-sm">Isi parameter di sebelah kiri dan jalankan eksperimen untuk melihat metrik di sini.</p>
+                                 <p className="text-sm mt-2 text-slate-400 max-w-sm">Isi parameter pada table di sebelah kiri dan jalankan eksperimen untuk mendapatkan hasil metrik.</p>
                               </div>
                            )}
                        </div>
@@ -154,11 +154,9 @@ function App() {
                {activeTab === 'history' && (
                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                        <div className="space-y-6">
-                          <h2 className="text-xl font-bold text-slate-900 mb-4">Import Konfigurasi</h2>
                           <ConfigImportPanel />
                        </div>
                        <div className="space-y-6">
-                          <h2 className="text-xl font-bold text-slate-900 mb-4">Riwayat Eksperimen</h2>
                           <RecentExperimentsPanel />
                        </div>
                    </div>
@@ -166,7 +164,6 @@ function App() {
 
                {activeTab === 'compare' && (
                    <div className="space-y-6">
-                      <h2 className="text-xl font-bold text-slate-900 mb-4">Perbandingan Metrik</h2>
                       <CompareExperimentsPanel />
                    </div>
                )}

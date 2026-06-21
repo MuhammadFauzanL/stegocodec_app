@@ -34,10 +34,10 @@ export const ConfigImportPanel = () => {
       <>
       <div className="bg-white border border-slate-200 rounded-md shadow-sm">
          <div className="px-5 py-3 border-b border-slate-100 flex items-center justify-between">
-            <h2 className="text-sm font-semibold">Import Settings</h2>
+            <h2 className="text-sm font-semibold">Impor Konfigurasi</h2>
          </div>
          <div className="p-5">
-            <p className="text-xs text-slate-500 mb-4">Upload a <code className="bg-slate-100 px-1 rounded text-slate-700">_config.json</code> file to replicate a previous experiment's exact parameters.</p>
+            <p className="text-xs text-slate-500 mb-4">Unggah file <code className="bg-slate-100 px-1 rounded text-slate-700">_config.json</code> untuk mereplikasi parameter eksperimen sebelumnya secara presisi.</p>
             <input 
                type="file" 
                accept=".json" 
