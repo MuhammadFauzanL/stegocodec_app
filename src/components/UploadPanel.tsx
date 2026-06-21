@@ -151,10 +151,10 @@ export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, 
                <label className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wide">Pesan Rahasia (Secret Message)</label>
                <textarea value={message} onChange={e => setMessage(e.target.value)} className="w-full border border-slate-200 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent" rows={2}></textarea>
             </div>
-            <div className="grid grid-cols-2 gap-3">
+            <div className="space-y-3">
                 <div>
                     <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Metode Penyisipan (Embedding Method)</label>
-                    <select value={embedMethod} onChange={e => setEmbedMethod(e.target.value)} className="w-full border border-slate-200 rounded text-xs p-1.5 focus:outline-none">
+                    <select value={embedMethod} onChange={e => setEmbedMethod(e.target.value)} className="w-full border border-slate-200 rounded text-xs p-2 focus:outline-none">
                         <option value="lsb">Standar LSB (Standard LSB)</option>
                         <option value="lsb_opap">LSB + Penyesuaian Piksel (LSB + OPAP)</option>
                         {fileType === 'image' && <option value="dct_domain">Simulasi Domain Frekuensi (DCT-Domain)</option>}
@@ -162,15 +162,15 @@ export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, 
                 </div>
                 <div>
                     <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Error Correction (ECC)</label>
-                    <select value={eccMethod} onChange={e => setEccMethod(e.target.value as ECCMethod)} className="w-full border border-slate-200 rounded text-xs p-1.5 focus:outline-none">
+                    <select value={eccMethod} onChange={e => setEccMethod(e.target.value as ECCMethod)} className="w-full border border-slate-200 rounded text-xs p-2 focus:outline-none">
                         <option value="none">Tanpa Proteksi (None)</option>
                         <option value="repetition3">Pengulangan 3x (Repetition 3x)</option>
                         <option value="hamming74">Kode Hamming 7,4 (Hamming 7,4)</option>
                     </select>
                 </div>
-                <div className="col-span-2">
+                <div>
                     <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Simulasi Serangan (Robustness Attack)</label>
-                    <select value={compression} onChange={e => setCompression(e.target.value)} className="w-full border border-slate-200 rounded text-xs p-1.5 focus:outline-none">
+                    <select value={compression} onChange={e => setCompression(e.target.value)} className="w-full border border-slate-200 rounded text-xs p-2 focus:outline-none">
                         {compressionOptions()}
                     </select>
                     <div className="mt-1 text-[9px] text-slate-400 italic">
