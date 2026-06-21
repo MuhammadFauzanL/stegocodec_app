@@ -37,7 +37,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onEnter }) => {
       {/* Right Panel (Image) */}
       <div className="hidden lg:block lg:w-7/12 relative bg-slate-900 overflow-hidden">
         <img 
-          src="/OIP.jpg" 
+          src="/OIP.png" 
           alt="StegoCodec Background" 
           className="absolute inset-0 w-full h-full object-cover z-0"
         />
