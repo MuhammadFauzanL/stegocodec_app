@@ -101,13 +101,13 @@ Processing Time Total: ${record.processing_time_total_ms} ms
     <>
     <div className="flex space-x-3 mt-4 pt-4 border-t border-slate-100">
        <button onClick={handleDownloadMetrics} className="text-xs font-medium border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 py-1.5 px-3 rounded-md">
-          Unduh Metrik (CSV)
+          Unduh Metrik (Download CSV)
        </button>
        <button onClick={handleDownloadStego} disabled={!stegoBlob} className="text-xs font-medium border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 py-1.5 px-3 rounded-md disabled:opacity-50">
-          Unduh Media Stego
+          Unduh Media Stego (Download Stego Media)
        </button>
        <button onClick={handleDownloadZip} disabled={!stegoBlob || zipping} className="text-xs font-medium border border-slate-900 bg-slate-900 hover:bg-slate-800 text-white py-1.5 px-3 rounded-md disabled:opacity-50">
-          {zipping ? 'Membungkus ZIP...' : 'Unduh Paket Lengkap (ZIP)'}
+          {zipping ? 'Membungkus ZIP (Zipping)...' : 'Unduh Paket Lengkap (Download Full ZIP)'}
        </button>
     </div>
     {modal && (

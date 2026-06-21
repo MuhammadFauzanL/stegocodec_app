@@ -25,28 +25,28 @@ export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, 
       if (fileType === 'audio') {
           return (
               <>
-                <option value="none">None (Clean Channel)</option>
-                <option value="adpcm_8bit">ADPCM 8-bit (Light)</option>
-                <option value="adpcm_6bit">ADPCM 6-bit (Medium)</option>
-                <option value="adpcm_4bit">ADPCM 4-bit (Heavy)</option>
+                <option value="none">Tanpa Serangan (None / Clean Channel)</option>
+                <option value="adpcm_8bit">Kompresi ADPCM 8-bit Ringan (Light)</option>
+                <option value="adpcm_6bit">Kompresi ADPCM 6-bit Sedang (Medium)</option>
+                <option value="adpcm_4bit">Kompresi ADPCM 4-bit Berat (Heavy)</option>
               </>
           );
       }
       if (fileType === 'video') {
           return (
               <>
-                <option value="none">None (Clean Channel)</option>
-                <option value="frame_diff_rle">Frame Differencing + RLE</option>
+                <option value="none">Tanpa Serangan (None / Clean Channel)</option>
+                <option value="frame_diff_rle">Kompresi Frame Differencing (Frame Diff + RLE)</option>
               </>
           );
       }
       return (
           <>
-             <option value="none">None (Clean Channel)</option>
-             <option value="dct">Simulate Custom DCT Loss</option>
-             <option value="jpeg_q90">JPEG Recompression Q90 (Light)</option>
-             <option value="jpeg_q70">JPEG Recompression Q70 (Medium)</option>
-             <option value="jpeg_q50">JPEG Recompression Q50 (Heavy)</option>
+             <option value="none">Tanpa Serangan (None / Clean Channel)</option>
+             <option value="dct">Simulasi DCT Ringan (Simulate Custom DCT Loss)</option>
+             <option value="jpeg_q90">Kompresi JPEG Q90 Ringan (Light)</option>
+             <option value="jpeg_q70">Kompresi JPEG Q70 Sedang (Medium)</option>
+             <option value="jpeg_q50">Kompresi JPEG Q50 Berat (Heavy)</option>
           </>
       );
   };
@@ -137,7 +137,7 @@ export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, 
 
       <div className="space-y-4">
         <div>
-          <label className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wide">Sumber Media (Gambar / WAV / MP4)</label>
+          <label className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wide">Sumber Media (Media Source)</label>
           <input type="file" accept="image/png, image/jpeg, audio/wav, video/mp4" onChange={e => {
               setFile(e.target.files?.[0] || null);
               setCompression('none'); 
@@ -148,24 +148,24 @@ export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, 
         {mode === 'embedding' && (
           <>
             <div>
-               <label className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wide">Pesan Rahasia</label>
+               <label className="block text-xs font-semibold text-slate-700 mb-1.5 uppercase tracking-wide">Pesan Rahasia (Secret Message)</label>
                <textarea value={message} onChange={e => setMessage(e.target.value)} className="w-full border border-slate-200 rounded-md p-3 text-sm focus:outline-none focus:ring-2 focus:ring-slate-900 focus:border-transparent" rows={2}></textarea>
             </div>
             <div className="grid grid-cols-2 gap-3">
                 <div>
-                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Metode Embedding</label>
+                    <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Metode Penyisipan (Embedding Method)</label>
                     <select value={embedMethod} onChange={e => setEmbedMethod(e.target.value)} className="w-full border border-slate-200 rounded text-xs p-1.5 focus:outline-none">
-                        <option value="lsb">Standard LSB</option>
-                        <option value="lsb_opap">LSB + OPAP</option>
-                        {fileType === 'image' && <option value="dct_domain">DCT-Domain</option>}
+                        <option value="lsb">Standar LSB (Standard LSB)</option>
+                        <option value="lsb_opap">LSB + Penyesuaian Piksel (LSB + OPAP)</option>
+                        {fileType === 'image' && <option value="dct_domain">Simulasi Domain Frekuensi (DCT-Domain)</option>}
                     </select>
                 </div>
                 <div>
                     <label className="block text-[10px] font-bold text-slate-400 uppercase mb-1">Error Correction (ECC)</label>
                     <select value={eccMethod} onChange={e => setEccMethod(e.target.value as ECCMethod)} className="w-full border border-slate-200 rounded text-xs p-1.5 focus:outline-none">
-                        <option value="none">None</option>
-                        <option value="repetition3">Repetition (3x)</option>
-                        <option value="hamming74">Hamming (7,4)</option>
+                        <option value="none">Tanpa Proteksi (None)</option>
+                        <option value="repetition3">Pengulangan 3x (Repetition 3x)</option>
+                        <option value="hamming74">Kode Hamming 7,4 (Hamming 7,4)</option>
                     </select>
                 </div>
                 <div className="col-span-2">
@@ -179,7 +179,7 @@ export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, 
                 </div>
             </div>
             <button onClick={handleRun} disabled={loading || !file} className="w-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold py-3 rounded-md transition-colors mt-2 shadow-sm disabled:opacity-50">
-              {loading ? 'Sedang memproses...' : 'Jalankan Eksperimen'}
+              {loading ? 'Sedang Memproses (Processing)...' : 'Jalankan Eksperimen (Run Experiment)'}
             </button>
           </>
         )}
@@ -187,11 +187,11 @@ export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, 
         {mode === 'extraction' && (
           <>
             <button onClick={handleRun} disabled={loading || !file} className="w-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold py-3 rounded-md transition-colors mt-2 shadow-sm disabled:opacity-50">
-              {loading ? 'Mengekstrak...' : 'Ekstrak Payload'}
+              {loading ? 'Mengekstrak (Extracting)...' : 'Ekstrak Pesan (Extract Payload)'}
             </button>
             {extractedPayload && (
               <div className="mt-4 p-4 border border-slate-200 bg-white rounded-lg shadow-sm">
-                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Pesan Berhasil Diekstrak</h3>
+                <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Pesan Berhasil Diekstrak (Successfully Extracted)</h3>
                 <div className="text-sm font-semibold text-slate-900 break-words">
                   {extractedPayload}
                 </div>
@@ -203,22 +203,22 @@ export const UploadPanel = ({ onComplete }: { onComplete: (r: ExperimentRecord, 
         {mode === 'codec' && (
           <>
             <button onClick={handleRun} disabled={loading || !file} className="w-full bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold py-3 rounded-md transition-colors mt-2 shadow-sm disabled:opacity-50">
-              {loading ? 'Sedang Memproses...' : 'Kompres & Dekompres (RLE)'}
+              {loading ? 'Sedang Memproses (Processing)...' : 'Kompres & Dekompres (Compress & Decompress RLE)'}
             </button>
             {codecResult && (
               <div className="mt-4 p-4 border border-slate-200 bg-white rounded-lg shadow-sm">
-                 <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Hasil Codec RLE</h3>
-                 <div className="text-sm font-semibold text-slate-900 mb-2">Rasio Kompresi: {codecResult.ratio.toFixed(4)}x</div>
+                 <h3 className="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">Hasil Codec RLE (Codec Results)</h3>
+                 <div className="text-sm font-semibold text-slate-900 mb-2">Rasio Kompresi (Compression Ratio): {codecResult.ratio.toFixed(4)}x</div>
                  <div className="text-xs text-slate-500 mb-4">
                     Original: {(codecResult.original/1024).toFixed(2)} KB &rarr; Compressed: {(codecResult.compressed/1024).toFixed(2)} KB <br/>
-                    (Waktu: {codecResult.time.toFixed(2)} ms)
+                    (Waktu/Time: {codecResult.time.toFixed(2)} ms)
                  </div>
                  <button onClick={() => {
                      const url = URL.createObjectURL(codecResult.blob);
                      const a = document.createElement('a'); a.href = url; a.download = 'decompressed_rle.png'; a.click();
                      URL.revokeObjectURL(url);
                  }} className="w-full text-xs font-bold border border-slate-200 bg-slate-100 hover:bg-slate-200 text-slate-700 py-2 px-3 rounded-md transition-colors">
-                    Unduh Hasil Dekompresi
+                    Unduh Hasil Dekompresi (Download Decompressed Result)
                  </button>
               </div>
             )}
