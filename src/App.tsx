@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { LandingPage } from './components/LandingPage';
 import { MetricsDashboard } from './components/MetricsDashboard';
 import { UploadPanel } from './components/UploadPanel';
 import { RecentExperimentsPanel } from './components/RecentExperimentsPanel';
@@ -26,7 +27,12 @@ function App() {
   const [stegoBlob, setStegoBlob] = useState<Blob | null>(null);
   const [activeTab, setActiveTab] = useState<NavTab>('encode');
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [hasEntered, setHasEntered] = useState(false);
   const now = useLiveClock();
+
+  if (!hasEntered) {
+    return <LandingPage onEnter={() => setHasEntered(true)} />;
+  }
 
   const handleComplete = (record: ExperimentRecord, blob: Blob) => {
       setCurrentRecord(record);
