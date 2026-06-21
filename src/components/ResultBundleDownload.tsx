@@ -26,7 +26,7 @@ export const ResultBundleDownload = ({ record, stegoBlob, loading }: { record: E
   const getExt = () => record?.media_type === 'audio' ? 'wav' : 'png';
 
   const handleDownloadStego = () => {
-     if (!stegoBlob) return;
+     if (!stegoBlob || !record) return;
      const url = URL.createObjectURL(stegoBlob);
      const a = document.createElement('a');
      a.href = url;
