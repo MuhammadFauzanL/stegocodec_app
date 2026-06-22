@@ -56,7 +56,12 @@ export const UploadPanel = ({ onComplete, onStart, onClear }: { onComplete: (r: 
     if (mode === 'embedding' && !message.trim()) {
         return setModal({ title: 'Peringatan', message: 'Pesan rahasia tidak boleh kosong.' });
     }
-    if (onStart) onStart();
+    if (mode === 'embedding') {
+        if (onStart) onStart();
+    } else {
+        if (onClear) onClear();
+    }
+    
     setLoading(true);
     setExtractedPayload(null);
     setCodecResult(null);
